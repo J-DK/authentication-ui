@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiBaseUrl: 'https://auth-mechanism-service.herokuapp.com'
+  // The above URL would be just localhost for dev environments but here I am referring to the prod URL as I am testing with the prod APIs
 };
 
 /*

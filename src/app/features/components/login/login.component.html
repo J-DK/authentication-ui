@@ -1,0 +1,96 @@
+<div mat-dialog-content>
+    <mat-tab-group [(selectedIndex)]="selectedIndex">
+        <mat-tab label="Login">
+            <form [formGroup]="loginForm" class="form" (submit)="loginUser()">
+                <div class="d-flex flex-column">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email">
+                        <mat-icon matSuffix>person</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Password</mat-label>
+                        <input matInput formControlName="password"
+                               [type]='showLoginPassword ? "text" : "password"'>
+                        <mat-icon matSuffix
+                                  (click)="showLoginPassword = !showLoginPassword">
+                            {{showLoginPassword ? 'visibility' : 'visibility_off'}}
+                        </mat-icon>
+                    </mat-form-field>
+                    <button mat-button class="forgot-password no-outline" (click)="forgotPassword()"> Forgot password?</button>
+                </div>
+                <div class="login-actions">
+                    <button type="submit" mat-raised-button color="primary" class="btn-login">Login</button>
+                    <button class="no-outline" type="button" mat-button (click)="selectedIndex = 1" color="accent">
+                        New User? Sign up here
+                    </button>
+                </div>
+            </form>
+        </mat-tab>
+        <mat-tab label="Sign up">
+            <form [formGroup]="registerForm" class="form" (submit)="registerUser()">
+                <div class="d-flex flex-column">
+                    <div>
+                        <mat-form-field class="col-space" appearance="fill">
+                            <mat-label>First name</mat-label>
+                            <input matInput placeholder="" formControlName="firstName">
+                            <mat-icon matSuffix>person</mat-icon>
+                        </mat-form-field>
+                        <mat-form-field class="" appearance="fill">
+                            <mat-label>Last name</mat-label>
+                            <input matInput placeholder="" formControlName="lastName">
+                            <mat-icon matSuffix>person</mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field class="col-space" appearance="fill">
+                            <mat-label>Email address</mat-label>
+
+                            <input matInput placeholder="" formControlName="email">
+                            <mat-icon matSuffix>email</mat-icon>
+                        </mat-form-field>
+
+                        <mat-form-field class="col-space" appearance="fill">
+                            <mat-label>Phone number</mat-label>
+                            <input matInput placeholder="" formControlName="mobile">
+                            <mat-icon matSuffix>phone</mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field class="col-space" appearance="fill">
+                            <mat-label>Password</mat-label>
+                            <input matInput placeholder="" formControlName="password"
+                                   [type]="showPassword ? 'text' : 'password'">
+                            <mat-icon matSuffix
+                                      (click)="showPassword = !showPassword">
+                                {{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+                        </mat-form-field>
+                        <mat-form-field class="col-space" appearance="fill">
+
+                            <mat-label>Confirm password</mat-label>
+                            <input matInput placeholder="" formControlName="confirmPassword"
+                                   [type]="showConfPassword ? 'text' : 'password'" [pattern]="password.value">
+                            <mat-icon matSuffix
+                                      (click)="showConfPassword = !showConfPassword">
+                                {{ showConfPassword ? 'visibility' : 'visibility_off' }}
+                            </mat-icon>
+                            <mat-error *ngIf="confirmPassword.errors?.pattern">
+                                Passwords didn't match
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="float-right col-space">
+                    <button class="no-outline" type="button" mat-button (click)="selectedIndex = 0" color="accent">
+                        Already have an account? Login here
+                    </button>
+                    <button class="btn-reset" mat-button type="reset" color="warn" (click)="resetRegisterForm()">Reset
+                    </button>
+                    <button mat-button type="submit" mat-raised-button color="primary"
+                            [disabled]="registerForm.invalid">Sign up
+                    </button>
+                </div>
+            </form>
+        </mat-tab>
+    </mat-tab-group>
+</div>

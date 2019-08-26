@@ -1,0 +1,45 @@
+:host {
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+
+  form {
+    padding-top: 15px;
+  }
+
+  .col-space {
+   margin-right: 15px;
+  }
+
+  .btn-reset {
+    margin-right: 15px;
+    margin-bottom: 5px;
+  }
+
+  .btn-login {
+    margin-left: 5px;
+    margin-bottom: 5px;
+  }
+
+  .login-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .no-outline {
+    outline: none;
+    font-size: 12px;
+  }
+
+  .forgot-password {
+      color: #f44336;
+      font-size: 12px;
+      margin-top: -20px;
+      margin-bottom: 10px
+  }
+
+mat-card-title, mat-card-content {
+    display: flex;
+    justify-content: center;
+  }
+}
