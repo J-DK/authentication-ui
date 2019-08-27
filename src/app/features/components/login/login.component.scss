@@ -42,4 +42,22 @@ mat-card-title, mat-card-content {
     display: flex;
     justify-content: center;
   }
+
+.example-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+  margin-bottom: -20px;
+}
+
+.example-margin {
+  margin: 10px;
+}
+
+
+.btn-otp {
+    margin-top: -20px;
+    margin-bottom: 5px;
+}
 }

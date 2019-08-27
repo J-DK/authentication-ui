@@ -1,15 +1,26 @@
 <div mat-dialog-content>
     <mat-tab-group [(selectedIndex)]="selectedIndex">
         <mat-tab label="Login">
+        <section class="example-section">
+        <mat-radio-group [(ngModel)]="loginMode">Login via
+        <mat-radio-button class="example-margin" value="email">
+          Email
+        </mat-radio-button>
+        <mat-radio-button class="example-margin" value="OTP">
+          OTP
+        </mat-radio-button>
+      </mat-radio-group>
+      </section>
             <form [formGroup]="loginForm" class="form" (submit)="loginUser()">
                 <div class="d-flex flex-column">
                     <mat-form-field appearance="fill">
-                        <mat-label>Email</mat-label>
+                        <mat-label>{{loginMode === 'email' ? 'Email' : 'Mobile'}}</mat-label>
                         <input matInput formControlName="email">
                         <mat-icon matSuffix>person</mat-icon>
                     </mat-form-field>
+                    <button mat-raised-button color="primary" *ngIf="loginMode === 'OTP'" class="no-outline btn-otp" (click)="requestOTP()"> Request OTP</button>
                     <mat-form-field appearance="fill">
-                        <mat-label>Password</mat-label>
+                        <mat-label>{{loginMode === 'email' ? 'Password' : 'OTP'}}</mat-label>
                         <input matInput formControlName="password"
                                [type]='showLoginPassword ? "text" : "password"'>
                         <mat-icon matSuffix
@@ -17,7 +28,7 @@
                             {{showLoginPassword ? 'visibility' : 'visibility_off'}}
                         </mat-icon>
                     </mat-form-field>
-                    <button mat-button class="forgot-password no-outline" (click)="forgotPassword()"> Forgot password?</button>
+                    <button mat-button *ngIf="loginMode === 'email'" class="forgot-password no-outline" (click)="forgotPassword()"> Forgot password?</button>
                 </div>
                 <div class="login-actions">
                     <button type="submit" mat-raised-button color="primary" class="btn-login">Login</button>
@@ -36,6 +47,7 @@
                             <input matInput placeholder="" formControlName="firstName">
                             <mat-icon matSuffix>person</mat-icon>
                         </mat-form-field>
+
                         <mat-form-field class="" appearance="fill">
                             <mat-label>Last name</mat-label>
                             <input matInput placeholder="" formControlName="lastName">

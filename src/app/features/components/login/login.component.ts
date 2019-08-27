@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
     showLoginPassword = false;
     loginForm: FormGroup;
     returnUrl: string;
+    loginMode: string = "email";
 
 
     constructor(private fb: FormBuilder,
@@ -41,7 +42,7 @@ export class LoginComponent implements OnInit {
             confirmPassword: new FormControl(null, [Validators.required]),
             firstName: new FormControl("", [Validators.required]),
             lastName: new FormControl("", [Validators.required]),
-            mobile: new FormControl("", [Validators.minLength(10), Validators.maxLength(13)])
+            mobile: new FormControl("", [Validators.minLength(10), Validators.maxLength(10)])
         })
     }
 
@@ -87,7 +88,15 @@ export class LoginComponent implements OnInit {
             email: this.loginForm.controls['email'].value,
             password: this.loginForm.controls['password'].value
         };
+
+        if(this.loginMode === "OTP") {
+            this.loginForm.get("email").clearValidators();
+            this.loginForm.get("email").setValidators([Validators.required, Validators.minLength(10), Validators.maxLength(10)]);
+            this.loginForm.get("email").updateValueAndValidity();
+            }
+
         if (this.loginForm.valid) {
+          if(this.loginMode === "email") {
             this.authService.login(loginUser).subscribe(res => {
                    if (res.code === "200") {
                     this.snackBar.open(res.message, res.code, {
@@ -104,6 +113,23 @@ export class LoginComponent implements OnInit {
             }, () => {
                 this.resetLoginForm();
             });
+            } else {
+                const mobile = this.loginForm.controls['email'].value;
+                const otp = this.loginForm.controls['password'].value;
+                this.authService.validateOTP(mobile, otp).subscribe((res: any) => {
+                    if(res.status === "success") {
+                        this.router.navigate(['/home']);
+                    } else {
+                         this.snackBar.open(res.reason, res.statusCode, {
+                        duration: 4000
+                    });
+                    }
+                }, (error) => {
+                this.snackBar.open("There exists a problem while connecting to the third party API", "500", {
+                    duration: 5000
+                });
+                }, () => this.resetLoginForm());
+            }
         }
     }
 
@@ -143,5 +169,22 @@ export class LoginComponent implements OnInit {
         }, (error) => {
                 console.error("error:" + error.message);
             }, () => this.resetLoginForm());
+    }
+
+
+    requestOTP() {
+        const mobile = this.loginForm.controls['email'].value;
+        this.authService.validateUserByMobile(mobile).subscribe(res => {
+            if(res.code === "200") {
+                this.authService.generateOTP(mobile).subscribe();
+                 this.snackBar.open("An OTP has been sent to your mobile", res.code, {
+                        duration: 4000
+            });
+            } else {
+                this.snackBar.open(res.message, res.code, {
+                        duration: 4000
+            });
+            }
+        })
     }
 }

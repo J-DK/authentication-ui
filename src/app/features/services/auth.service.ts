@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -58,5 +58,38 @@ export class AuthService extends BaseService {
  logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+ }
+
+ validateUserByMobile(mobile: string): Observable<any> {
+     return this.http.get(this.getBaseUrl() + "/login-service/api/v1/user/validate?mobile=" + mobile);
+ }
+
+ generateOTP(mobile: string): Observable<any> {
+    let header = new HttpHeaders({'content-type': 'application/x-www-form-urlencoded'});
+    return this.http.post('https://www.smsgateway.center/OTPApi/send', {
+        userId: 'jami11',
+        password: 'nlljyel7',
+        mobile: '91'+mobile,
+        senderId: 'SGCSMS',
+        sendMethod: 'generate',
+        codeLength: 4
+  }, {headers : header});
+ }
+
+ validateOTP(mobile:string, otp: string): Observable<any> {
+    let header = new HttpHeaders({'content-type': 'application/x-www-form-urlencoded'});
+    return this.http.post('https://www.smsgateway.center/OTPApi/send', {
+        userId: 'jami11',
+        password: 'nlljyel7',
+        mobile: '91'+mobile,
+        sendMethod: 'verify',
+        otp: otp
+  }, {headers : header})
+  .pipe(map((response: any) => {
+        if(response.status === "success") {
+            this.setLocalStorage(response.mobile, response.statusCode);
+        }
+        return response;
+    }));
  }
 }
