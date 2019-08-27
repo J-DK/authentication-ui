@@ -62,7 +62,17 @@ export class LoginComponent implements OnInit {
             mobile: this.registerForm.controls["mobile"].value
         };
         if (this.registerForm.valid) {
-
+             this.authService.signup(user).subscribe(res => {
+                this.router.navigate(['/home']);
+                this.snackBar.open(res.message, res.code, {
+                    duration: 5000
+                });
+                this.resetRegisterForm();
+            }, (error) => {
+                this.snackBar.open("There exists a problem while connecting to the server", "500", {
+                    duration: 5000
+                });
+            }, () => this.resetRegisterForm() );
         }
 
     }
@@ -73,15 +83,15 @@ export class LoginComponent implements OnInit {
             password: this.loginForm.controls['password'].value
         };
         if (this.loginForm.valid) {
-            this.authService.login(loginUser).subscribe(response => {
-                console.log("success:" + response.message);
-                    this.router.navigate([this.returnUrl]);
-                   if (response.code === "200") {
-                    this.snackBar.open(response.message, response.code, {
+            this.authService.login(loginUser).subscribe(res => {
+                console.log("success:" + res.message);
+                this.router.navigate([this.returnUrl]);
+                   if (res.code === "200") {
+                    this.snackBar.open(res.message, res.code, {
                         duration: 4000
                     });
                    } else {
-                       this.snackBar.open(response.message, response.code, {
+                       this.snackBar.open(res.message, res.code, {
                         duration: 4000
                     });
                    }
