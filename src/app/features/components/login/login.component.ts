@@ -63,16 +63,21 @@ export class LoginComponent implements OnInit {
         };
         if (this.registerForm.valid) {
              this.authService.signup(user).subscribe(res => {
-                this.router.navigate(['/home']);
-                this.snackBar.open(res.message, res.code, {
-                    duration: 5000
-                });
-                this.resetRegisterForm();
+                if (res.code === "200") {
+                    this.router.navigate(['/home']);
+                    this.snackBar.open(res.message, res.code, {
+                        duration: 5000
+                    });
+                } else {
+                    this.snackBar.open(res.message, res.code, {
+                        duration: 4000
+                    });
+                }
             }, (error) => {
                 this.snackBar.open("There exists a problem while connecting to the server", "500", {
                     duration: 5000
                 });
-            }, () => this.resetRegisterForm() );
+            }, () => this.resetRegisterForm());
         }
 
     }
@@ -84,12 +89,11 @@ export class LoginComponent implements OnInit {
         };
         if (this.loginForm.valid) {
             this.authService.login(loginUser).subscribe(res => {
-                console.log("success:" + res.message);
-                this.router.navigate([this.returnUrl]);
                    if (res.code === "200") {
                     this.snackBar.open(res.message, res.code, {
                         duration: 4000
                     });
+                    this.router.navigate([this.returnUrl]);
                    } else {
                        this.snackBar.open(res.message, res.code, {
                         duration: 4000

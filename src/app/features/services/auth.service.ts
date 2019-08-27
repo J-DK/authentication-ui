@@ -27,7 +27,9 @@ export class AuthService extends BaseService {
   login(loginUser: LoginUser): Observable<any> {
       return this.http.post(this.getBaseUrl() + "/login-service/api/v1/login", loginUser)
       .pipe(map((response: any) => {
-               this.setLocalStorage(response.email, response.userName);
+               if(response.code === "200") {
+                this.setLocalStorage(response.email, response.userName);
+               }
                 return response;
             }));
   }
@@ -35,8 +37,10 @@ export class AuthService extends BaseService {
   signup(user: User): Observable<any> {
     return this.http.post(this.getBaseUrl() + `/login-service/api/v1/signup`, user)
         .pipe(map((response: any) => {
+            if(response.code === "200") {
                 this.setLocalStorage(response.email, response.userName);
-                return response;
+            }
+            return response;
             }));
   }
 
