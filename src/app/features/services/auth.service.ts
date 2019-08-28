@@ -68,11 +68,13 @@ export class AuthService extends BaseService {
     let header = new HttpHeaders({'content-type': 'application/x-www-form-urlencoded'});
     return this.http.post('https://www.smsgateway.center/OTPApi/send', {
         userId: 'jami11',
-        password: 'nlljyel7',
+        password: 'SMSjami11',
         mobile: '91'+mobile,
         senderId: 'SGCSMS',
         sendMethod: 'generate',
-        codeLength: 4
+        codeLength: 4,
+        msgType: 'text',
+        msg: 'Your SMSGatewayCenter OTP code is $otp$'
   }, {headers : header});
  }
 
@@ -80,7 +82,7 @@ export class AuthService extends BaseService {
     let header = new HttpHeaders({'content-type': 'application/x-www-form-urlencoded'});
     return this.http.post('https://www.smsgateway.center/OTPApi/send', {
         userId: 'jami11',
-        password: 'nlljyel7',
+        password: 'SMSjami11',
         mobile: '91'+mobile,
         sendMethod: 'verify',
         otp: otp
